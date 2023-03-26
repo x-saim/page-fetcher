@@ -29,13 +29,15 @@ const fetcher = (ULR, filepath) => {
       console.error(err);
     }
 
+    console.log(`You have successfully written the request domain's (${args[0]}) content to the file: ${args[1]}.`);
+
     fs.stat(args[1], (err, stats) => {
       if (err) {
         console.error(err);
         return;
       }
       const fileSize = stats.size;
-      console.log(fileSize);
+      console.log(`The file: ${args[1]} has a file size of ${fileSize} bytes.`);
     });
 
   });
@@ -44,4 +46,3 @@ const fetcher = (ULR, filepath) => {
 )};
 
 fetcher(args[0], args[1]);
-
