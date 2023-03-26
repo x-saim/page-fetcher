@@ -20,30 +20,31 @@ const fetcher = (link, filepath) => {
       return;
     }
     console.log('statusCode:', response && response.statusCode);
-
-  if(!filepath) {
-    console.error(err);
-    return;
-  } 
-  fs.writeFile(filepath, body, err => {
-    if (err) {
-      console.error(err);
+  
+    //Edge Case 2: File Path is Invalid
+    if (!filepath) {
+      console.error(error);
+      return;
     }
-
-    console.log(`You have successfully written the request domain's (${link}) content to the file: ${filepath}.`);
-
-    fs.stat(filepath, (err, stats) => {
+    
+    fs.writeFile(filepath, body, err => {
       if (err) {
         console.error(err);
-        return;
+      } else {
+        console.log(`You have successfully written the request domain's (${link}) content to the file: ${filepath}.`);
+        fs.stat(filepath, (err, stats) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          const fileSize = stats.size;
+          console.log(`The file: ${filepath} has a file size of ${fileSize} bytes.`);
+        });
       }
-      const fileSize = stats.size;
-      console.log(`The file: ${filepath} has a file size of ${fileSize} bytes.`);
     });
-
-  });
   }
 
-)};
+  );
+};
 
 fetcher(args[0], args[1]);
