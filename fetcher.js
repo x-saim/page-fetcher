@@ -10,8 +10,16 @@ args = args.slice(2); //reassigning array to args and ignoring the node executab
 //nested callbacks
 const fetcher = (link, filepath) => {
   request(link, (error, response, body) => {
-  console.log('error:', error); // Print the error if one occurred
-  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+    if (error) {
+      console.error(`Error: ${error.message}`);
+      return;
+    }
+    //Edge Case 3: Check for if URL results in an error or non-200 result?
+    if (response.statusCode !== 200) {
+      console.error(`Error: Invalid URL: ${link}`);
+      return;
+    }
+    console.log('statusCode:', response && response.statusCode);
 
   if(!filepath) {
     console.error(err);
