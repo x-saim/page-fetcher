@@ -17,6 +17,7 @@ args = args.slice(2); //reassigning array to args and ignoring the node executab
 //args[0] = URL index
 //args[1] = filepath
 
+//nested callbacks
 const fetcher = (ULR, filepath) => {
 
   request(args[0], (error, response, body) => {
@@ -27,10 +28,20 @@ const fetcher = (ULR, filepath) => {
     if (err) {
       console.error(err);
     }
-  });
 
+    fs.stat(args[1], (err, stats) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      const fileSize = stats.size;
+      console.log(fileSize);
+    });
+
+  });
   }
 
 )};
 
 fetcher(args[0], args[1]);
+
