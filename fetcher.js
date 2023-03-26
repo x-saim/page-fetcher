@@ -1,13 +1,3 @@
-/*
-Implement a node app called fetcher.js.
-
-It should take two command line arguments:
-
-a URL
-a local file path
-It should download the resource at the URL to the local path on your machine. Upon completion, it should print out a message like Downloaded and saved 1235 bytes to ./index.html.
-
-*/
 const request = require('request');
 const fs = require('fs');
 
@@ -18,26 +8,29 @@ args = args.slice(2); //reassigning array to args and ignoring the node executab
 //args[1] = filepath
 
 //nested callbacks
-const fetcher = (ULR, filepath) => {
-
-  request(args[0], (error, response, body) => {
+const fetcher = (link, filepath) => {
+  request(link, (error, response, body) => {
   console.log('error:', error); // Print the error if one occurred
   console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-  
-  fs.writeFile(args[1], body, err => {
+
+  if(!filepath) {
+    console.error(err);
+    return;
+  } 
+  fs.writeFile(filepath, body, err => {
     if (err) {
       console.error(err);
     }
 
-    console.log(`You have successfully written the request domain's (${args[0]}) content to the file: ${args[1]}.`);
+    console.log(`You have successfully written the request domain's (${link}) content to the file: ${filepath}.`);
 
-    fs.stat(args[1], (err, stats) => {
+    fs.stat(filepath, (err, stats) => {
       if (err) {
         console.error(err);
         return;
       }
       const fileSize = stats.size;
-      console.log(`The file: ${args[1]} has a file size of ${fileSize} bytes.`);
+      console.log(`The file: ${filepath} has a file size of ${fileSize} bytes.`);
     });
 
   });
